@@ -1,22 +1,23 @@
 {
-  description = "A very basic flake";
+  description = "A pretty basic flake";
 
   inputs = {
-    nixpkgsunstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
   };
 
-  outputs = { self, nixpkgs, nixpkgsunstable, ... } @ inputs: 
+  outputs = { self, nixpkgs, ... } @ inputs: 
     let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      pkgsus = nixpkgsunstable.legacyPackages.x86_64-linux;
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      lib = nixpkgs.lib;
     in
       {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-	specialArgs = { inherit inputs; };
-        modules= [
-          ./configuration.nix
-        ];
+      nixosConfigurations.nixos = lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [ ./configuration.nix ];
       };
     };
 }
