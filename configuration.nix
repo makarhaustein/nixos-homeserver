@@ -15,15 +15,20 @@
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-
   networking.hostName = "nixos"; # Define your hostname.
 
-  # Configure network proxy if necessary networking.proxy.default = "http://user:password@proxy:port/"; networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
+  # Enable networking with static ip
   networking.networkmanager.enable = true;
+  networking.interfaces.eno1.ipv4.addresses = [{ 
+    address = "10.220.91.231";
+    prefixLength = 24;
+  }];
+  networking.enableIPv6 = false;
+  
+  # -- Use pihole for dns
+  networking.networkmanager.insertNameservers = [ "10.220.91.230" ];
 
-  # Set your time zone.
+  # Set your time zone
   time.timeZone = "Europe/Berlin";
 
   # Select internationalisation properties.
