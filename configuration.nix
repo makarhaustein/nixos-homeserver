@@ -69,6 +69,7 @@
     gh 
     neovim 
     libgcc
+    fail2ban
   ];
   
   programs = {
@@ -82,6 +83,11 @@
   # };
 
   # List services that you want to enable:
+
+  # Fail2Ban
+  services.fail2ban = {
+    enable = true;
+  };
 
   # OpenSSH 
   services.openssh = { 
