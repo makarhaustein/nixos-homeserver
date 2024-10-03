@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, ... } @ inputs: 
@@ -12,10 +14,9 @@
         inherit system;
         config.allowUnfree = true;
       };
-      lib = nixpkgs.lib;
     in
       {
-      nixosConfigurations.nixos = lib.nixosSystem {
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [ ./configuration.nix ];
       };

@@ -6,6 +6,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix 
+      inputs.sops-nix.nixosModules.sops
     ];
 
   # Bootloader
@@ -71,7 +72,13 @@
     libgcc
     fail2ban
   ];
-  
+
+  # Sops
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.defaultSopsFormat = "yaml";
+  sops.age.keyFile = "home/user/.config/sops/age/keys.txt";
+ 
+  # Neovim
   programs = {
     neovim = {
       enable = true;
